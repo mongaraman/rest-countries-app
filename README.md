@@ -22,7 +22,7 @@ This is a single-page web application built with React that interacts with the R
 
 1. Clone the repository:
    ```bash
-   git clone <YOUR_REPO_URL>
+   git clone https://github.com/mongaraman/rest-countries-app.git
    cd rest-countries-app
 
 2. Install dependencies:
