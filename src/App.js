@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
 import './App.css';
 import CountryGrid from './components/CountryGrid';
 import SearchBar from './components/SearchBar';
@@ -27,11 +25,14 @@ const App = () => {
   const handleSearch = event => setSearchTerm(event.target.value.toLowerCase());
 
   const handleFavorite = country => {
-    if (favorites.some(fav => fav.cca3 === country.cca3)) {
-      setFavorites(prevFavorites => prevFavorites.filter(fav => fav.cca3 !== country.cca3));
-    } else {
-      setFavorites(prevFavorites => [...prevFavorites, country]);
-    }
+    setFavorites(prevFavorites => {
+      const isFavorite = prevFavorites.some(fav => fav.cca3 === country.cca3);
+      if (isFavorite) {
+        return prevFavorites.filter(fav => fav.cca3 !== country.cca3);
+      } else {
+        return [...prevFavorites, country];
+      }
+    });
   };
 
   const filteredCountries = countries.filter(country =>
