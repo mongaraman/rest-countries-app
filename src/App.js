@@ -3,6 +3,7 @@ import axios from 'axios';
 import './App.css';
 import CountryGrid from './components/CountryGrid';
 import SearchBar from './components/SearchBar';
+import CountryDetailModal from './components/CountryDetailModal';
 
 const App = () => {
   const [countries, setCountries] = useState([]);
@@ -11,6 +12,7 @@ const App = () => {
     const savedFavorites = localStorage.getItem('favorites');
     return savedFavorites ? JSON.parse(savedFavorites) : [];
   });
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
   useEffect(() => {
     axios.get('https://restcountries.com/v3.1/all')
@@ -35,6 +37,14 @@ const App = () => {
     });
   };
 
+  const handleRowClick = event => {
+    setSelectedCountry(event.data);
+  };
+
+  const closeModal = () => {
+    setSelectedCountry(null);
+  };
+
   const filteredCountries = countries.filter(country =>
     country.name.common.toLowerCase().includes(searchTerm) ||
     Object.values(country.languages || {}).some(language => language.toLowerCase().includes(searchTerm)) ||
@@ -48,7 +58,14 @@ const App = () => {
         countries={filteredCountries}
         handleFavorite={handleFavorite}
         favorites={favorites}
+        handleRowClick={handleRowClick}
       />
+      {selectedCountry && (
+        <CountryDetailModal
+          country={selectedCountry}
+          onClose={closeModal}
+        />
+      )}
       <h2>Favorites</h2>
       <ul className="favorites-list">
         {favorites.map(fav => (
